@@ -1,0 +1,15 @@
+<h1>🗣️ Talk to Text Notepad 🗒️</h1>
+
+<p #textBox>New Note: </p>
+
+<button
+    (click)="isRunning ? stopRecognition() : startRecognition()">
+    {{ isRunning ? 'stop':'start' }}
+</button>
+
+<button 
+    *ngIf="!isRunning"
+    [disabled]="isDownloading"
+    (click)="downloadNote()">
+    download note
+</button>
