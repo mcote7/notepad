@@ -1,8 +1,9 @@
 
 .note {
     margin-top: 1rem;
+    padding: 0.5rem;
     background-color: rgb(245, 241, 206);
-    &:nth-child(2) {
-        margin-top: 1rem;
+    .content {
+        margin-top: 0.5rem;
     }
 }

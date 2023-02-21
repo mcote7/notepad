@@ -30,7 +30,7 @@
     *ngFor="let note of storedNotes"
     class="stored-notes">
     <div class="note">
-        <div>{{note.id}} &bull; {{note.created|date}}</div>
-        <div>{{note.content}}</div>
+        <div>({{note.id}})&nbsp;&bull;&nbsp;{{note.created|date: 'M/d/yy h:mm a'}}</div>
+        <div class="content">{{note.content}}</div>
     </div>
 </div>
