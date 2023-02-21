@@ -3,6 +3,12 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 declare var webkitSpeechRecognition: any;
 declare var SpeechRecognition: any;
 
+interface Note {
+    id: number;
+    created: string;
+    content: string;
+};
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -15,6 +21,7 @@ export class AppComponent {
     @ViewChild('textBox') textBox!: ElementRef<HTMLParagraphElement>;
     public isDownloading: boolean = false;
     private localStore: Storage = window.localStorage;
+    public storedNotes: Array<Note> = [];
 
     constructor() {
         if ('webkitSpeechRecognition' in window) {
@@ -45,7 +52,8 @@ export class AppComponent {
                 this.startRecognition();
             }
         };
-        console.log("stored notes: ", this.localStore)
+        // console.log("stored notes: ", this.localStore)
+        this.getLocalNotes();
     }
 
     initSpeech() {
@@ -79,9 +87,27 @@ export class AppComponent {
         setTimeout(() => {this.isDownloading = false});
     }
 
+    clearText() {
+        this.textBox.nativeElement.innerHTML = "";
+    }
+
     storeLocal() {
-        console.log("storing local", window.localStorage)
-        const id: string = (this.localStore.length + 1).toString();
-        this.localStore.setItem(`note__${id}`, this.textBox.nativeElement.innerHTML);
+        const id: number = (this.localStore.length + 1);
+        const newNote: Note = {
+            id,
+            created: new Date().toISOString(),
+            content: this.textBox.nativeElement.innerHTML
+        };
+        this.localStore.setItem(`note__${id}`, JSON.stringify(newNote));
+        // console.log("storing local", this.localStore)
+        this.clearText();
+    }
+
+    getLocalNotes() {
+        for(let x in this.localStore) {
+            console.log("enumerate notes", this.localStore.getItem(x));
+            
+            // const note = JSON.parse();
+        }
     }
 }
