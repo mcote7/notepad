@@ -14,44 +14,38 @@ export class AppComponent {
     public isRunning: boolean = false;
     @ViewChild('textBox') textBox!: ElementRef<HTMLParagraphElement>;
     public isDownloading: boolean = false;
+    private localStore: Storage = window.localStorage;
 
     constructor() {
         if ('webkitSpeechRecognition' in window) {
             console.log("webkit speech in window!")
-
             this.speechRecognition = new webkitSpeechRecognition();
             this.initSpeech();
-
         } else if('SpeechRecognition' in window) {
             console.log("firefox speech in window!")
-
             this.speechRecognition = new SpeechRecognition();
             this.initSpeech();
-
         } else {
             console.log("speech NOT in window...")
         }
-
         // events 
         this.speechRecognition.onresult = (e:any) => {
             console.log("results?", e, e.results[e.results.length - 1][0].transcript)
             this.textBox.nativeElement.innerHTML += e.results[e.results.length - 1][0].transcript;
         };
-
         this.speechRecognition.onerror = (e:any) => {
             console.log("error?", e)
         };
-
         this.speechRecognition.onnomatch = (e:any) => {
             console.log("no match?", e)
         };
-
         this.speechRecognition.onend = (e:any) => {
             console.log("ended?", e)
             if(this.isRunning) {
                 this.startRecognition();
             }
         };
+        console.log("stored notes: ", this.localStore)
     }
 
     initSpeech() {
@@ -83,5 +77,11 @@ export class AppComponent {
         element.click();
         document.body.removeChild(element);
         setTimeout(() => {this.isDownloading = false});
+    }
+
+    storeLocal() {
+        console.log("storing local", window.localStorage)
+        const id: string = (this.localStore.length + 1).toString();
+        this.localStore.setItem(`note-${id}`, this.textBox.nativeElement.innerHTML);
     }
 }
