@@ -82,6 +82,6 @@ export class AppComponent {
     storeLocal() {
         console.log("storing local", window.localStorage)
         const id: string = (this.localStore.length + 1).toString();
-        this.localStore.setItem(`note-${id}`, this.textBox.nativeElement.innerHTML);
+        this.localStore.setItem(`note__${id}`, this.textBox.nativeElement.innerHTML);
     }
 }
