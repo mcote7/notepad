@@ -100,14 +100,19 @@ export class AppComponent {
         };
         this.localStore.setItem(`note__${id}`, JSON.stringify(newNote));
         // console.log("storing local", this.localStore)
+        this.storedNotes.push(newNote);
         this.clearText();
     }
 
     getLocalNotes() {
-        for(let x in this.localStore) {
-            console.log("enumerate notes", this.localStore.getItem(x));
-            
-            // const note = JSON.parse();
+        console.log("storage:", this.localStore)
+        if(this.localStore.length > 0) {
+            const notesArray: Array<string> = Object.values(this.localStore);
+            console.log("notes arr", notesArray)
+            for(let note of notesArray) {
+                console.log("parsed note: ", JSON.parse(note))
+                this.storedNotes.push(JSON.parse(note));
+            }
         }
     }
 }
