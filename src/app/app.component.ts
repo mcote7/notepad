@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 
+
 declare var webkitSpeechRecognition: any;
 declare var SpeechRecognition: any;
 
@@ -25,15 +26,15 @@ export class AppComponent {
 
     constructor() {
         if ('webkitSpeechRecognition' in window) {
-            console.log("webkit speech in window!")
+            // console.log("webkit speech in window!")
             this.speechRecognition = new webkitSpeechRecognition();
             this.initSpeech();
         } else if('SpeechRecognition' in window) {
-            console.log("firefox speech in window!")
+            // console.log("firefox speech in window!")
             this.speechRecognition = new SpeechRecognition();
             this.initSpeech();
         } else {
-            console.log("speech NOT in window...")
+            console.error("speech NOT in window...")
         }
         // events 
         this.speechRecognition.onresult = (e:any) => {
@@ -59,7 +60,7 @@ export class AppComponent {
     initSpeech() {
         this.speechRecognition.lang = 'en-US';
         this.speechRecognition.continuous = true;
-        console.log("speech init:",this.speechRecognition)
+        // console.log("speech init:",this.speechRecognition)
         this.startRecognition();
     }
 
@@ -104,13 +105,37 @@ export class AppComponent {
         this.clearText();
     }
 
+    // storeIndexDb() {
+    //     const newNote: Note = {
+    //         id: 1,
+    //         created: new Date().toISOString(),
+    //         content: this.textBox.nativeElement.innerHTML
+    //     };
+    //     const request = window.indexedDB.open("MyTestDatabase");
+    //     request.onerror = (event) => {
+    //         console.error("error indexDb", event)
+    //     };
+    //     request.onsuccess = (event) => {
+    //         console.info("success indexDb", event)
+    //         const target = event.target as IDBOpenDBRequest;
+    //         const db = target.result;
+    //         const objectStore = db.createObjectStore("notes", { autoIncrement : true });
+    //         objectStore.createIndex("content", "content", { unique: false });
+    //         objectStore.transaction.oncomplete = () => {
+    //             // Store values in the newly created objectStore.
+    //             const customerObjectStore = db.transaction("MyTestDatabase", "readwrite").objectStore("notes");
+    //             customerObjectStore.add(newNote);
+    //         };
+    //     };
+    // }
+
     getLocalNotes() {
-        console.log("storage:", this.localStore)
+        // console.log("storage:", this.localStore)
         if(this.localStore.length > 0) {
             const notesArray: Array<string> = Object.values(this.localStore);
-            console.log("notes arr", notesArray)
+            // console.log("notes arr", notesArray)
             for(let note of notesArray) {
-                console.log("parsed note: ", JSON.parse(note))
+                // console.log("parsed note: ", JSON.parse(note))
                 this.storedNotes.push(JSON.parse(note));
             }
         }
